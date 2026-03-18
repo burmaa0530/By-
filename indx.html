@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Миний Хайртад ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap');
+
+        body { 
+            background: radial-gradient(circle, #1a0a0a 0%, #050505 100%); 
+            color: white; 
+            font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+        }
+        
+        .romantic-font { font-family: 'Dancing Script', cursive; }
+
+        /* Хуудас шилжилтийн тохиргоо */
+        .page { 
+            display: none; 
+            height: 100vh; 
+            width: 100%;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10; 
+        }
+        .active { display: flex; }
+
+        .glass { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .card-gold { 
+            border: 3px solid #d4af37; 
+            background: #fffdfa; 
+            color: #2d241e; 
+            border-radius: 15px;
+            position: relative;
+        }
+
+        /* Зургийн хүрээ - Утас болон компьютер дээр тааруулсан */
+        .photo-frame { 
+            border: 8px solid white; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        #galleryImg {
+            width: 100%;
+            height: 400px;
+            object-fit: cover; /* Зургийг сунгахгүйгээр багтаана */
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .btn-grad {
+            background: linear-gradient(to right, #d4af37 0%, #f2d06b 51%, #d4af37 100%);
+            background-size: 200% auto;
+            transition: 0.5s;
+            color: black;
+            cursor: pointer;
+        }
+        .btn-grad:hover { background-position: right center; }
+
+        /* Видео тоглуулагч утсанд тааруулах */
+        .video-container {
+            width: 100%;
+            max-width: 300px;
+            aspect-ratio: 9/16;
+            background: black;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="music.mp3" loop></audio>
+    <div id="particles-js"></div>
+
+    <div id="step0" class="page active animate__animated">
+        <div onclick="openEnvelope()" class="glass p-10 rounded-[3rem] text-center cursor-pointer hover:scale-105 transition-all">
+            <div class="text-7xl mb-6">❤️</div>
+            <h1 class="romantic-font text-3xl mb-2 text-yellow-500">Миний хайртдаа...</h1>
+            <p class="text-gray-400 mt-2 italic animate-pulse">Нээхийн тулд дарна уу</p>
+        </div>
+    </div>
+
+    <div id="step1" class="page animate__animated">
+        <div class="card-gold p-8 max-w-[90%] w-full text-center shadow-2xl">
+            <h2 class="romantic-font text-2xl font-bold border-b border-yellow-200 pb-2 mb-4">Хайрт Энкүдээ</h2>
+            <p class="italic leading-relaxed text-md mb-6">
+                "Цэрэгт яваагүй ч гэсэн зүрх сэтгэлээрээ эх орноо хамгаалж яваа хайртдаа баярын мэнд! <br>
+                <span class="text-sm font-bold text-red-700">Хайртай шүү!</span>"
+            </p>
+            <button onclick="nextStep(2)" class="btn-grad px-8 py-2 rounded-full font-bold uppercase text-xs">Үргэлжлүүлэх</button>
+        </div>
+    </div>
+
+    <div id="step2" class="page animate__animated">
+        <div class="photo-frame bg-white p-1">
+            <img id="galleryImg" src="z 1.jpg" alt="Memory">
+        </div>
+        <div class="flex gap-4 mt-6">
+            <button onclick="prevImage()" class="glass px-4 py-2 rounded-xl text-sm">⬅️</button>
+            <span class="py-2 font-mono"><span id="imgNumber">1</span> / 8</span>
+            <button onclick="nextImage()" class="btn-grad px-4 py-2 rounded-xl text-sm font-bold">➡️</button>
+        </div>
+        <button onclick="nextStep(3)" class="mt-8 text-yellow-500 border-b border-yellow-900 text-sm">ВИДЕО ҮЗЭХ ➔</button>
+    </div>
+
+    <div id="step3" class="page animate__animated">
+        <div class="video-container shadow-2xl border-2 border-white/10">
+            <video id="myVideo" src="biclg 1.Mp4" controls playsinline class="w-full h-full object-cover"></video>
+        </div>
+        <button onclick="nextStep(4)" class="mt-6 btn-grad px-10 py-3 rounded-xl font-bold">Сүүлчийн алхам ✨</button>
+    </div>
+
+    <div id="step4" class="page animate__animated">
+        <div class="glass p-8 rounded-[2rem] max-w-[90%] w-full text-center">
+            <h2 class="romantic-font text-2xl mb-4 text-yellow-500">Хариу бичих 💬</h2>
+            <form action="https://formspree.io/f/mbdzpyoq" method="POST" class="space-y-4">
+                <textarea name="message" required placeholder="Энд хариултаа үлдээгээрэй..." 
+                    class="w-full bg-black/40 rounded-xl p-4 border border-white/10 focus:border-yellow-500 outline-none h-32 text-white"></textarea>
+                <button type="submit" class="w-full btn-grad py-3 rounded-xl font-bold">ИЛГЭЭХ ✨</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const images = ["z 1.jpg", "z 2.jpg", "z 3.jpg", "z 4.jpg", "z 5.jpg", "z 6.jpg", "z 7.jpg", "z 8.jpg"];
+        let currentImgIndex = 0;
+
+        function updateImage() {
+            const img = document.getElementById('galleryImg');
+            img.classList.add('animate__animated', 'animate__fadeOut');
+            setTimeout(() => {
+                img.src = images[currentImgIndex];
+                img.classList.remove('animate__fadeOut');
+                img.classList.add('animate__fadeIn');
+                document.getElementById('imgNumber').innerText = currentImgIndex + 1;
+            }, 300);
+        }
+
+        function nextImage() { currentImgIndex = (currentImgIndex + 1) % images.length; updateImage(); }
+        function prevImage() { currentImgIndex = (currentImgIndex - 1 + images.length) % images.length; updateImage(); }
+
+        function openEnvelope() {
+            document.getElementById('bgMusic').play().catch(e => console.log("Music play blocked"));
+            startHeartRain(); 
+            nextStep(1);
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function nextStep(stepNumber) {
+            // Одоо байгаа хуудсыг гаргах анимаци
+            const currentStep = document.querySelector('.page.active');
+            if (currentStep) {
+                currentStep.classList.add('animate__fadeOutLeft');
+                setTimeout(() => {
+                    currentStep.classList.remove('active', 'animate__fadeOutLeft');
+                    currentStep.style.display = 'none';
+
+                    // Дараагийн хуудсыг оруулах
+                    const nextStep = document.getElementById('step' + stepNumber);
+                    nextStep.style.display = 'flex';
+                    nextStep.classList.add('active', 'animate__fadeInRight');
+                    
+                    // Видео тоглуулах логик
+                    const v = document.getElementById('myVideo');
+                    if(stepNumber === 3) {
+                        v.play();
+                    } else {
+                        v.pause();
+                    }
+                }, 500);
+            }
+        }
+
+        function startHeartRain() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 30 },
+                    "shape": { 
+                        "type": "image",
+                        "image": { "src": "https://upload.wikimedia.org/wikipedia/commons/4/42/Love_Heart_SVG.svg", "width": 100, "height": 100 }
+                    },
+                    "opacity": { "value": 0.4 },
+                    "size": { "value": 15, "random": true },
+                    "move": { "enable": true, "speed": 3, "direction": "bottom", "out_mode": "out" }
+                }
+            });
+        }
+    </script>
+</body> 
+</html>
